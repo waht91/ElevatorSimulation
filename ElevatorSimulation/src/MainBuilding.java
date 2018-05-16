@@ -67,7 +67,7 @@ public class MainBuilding {
 			if(controller.checkFloors()){
 				if(controller.checkAvailability ()){
 					controller.requestE();
-					//Request elevator and assign one Succesfully Puhsed Good Job !!
+					//Request elevator and assign one Succesfully Puhsed Good Job !!!
 				}
 			}
 			controller.timepassone ();
