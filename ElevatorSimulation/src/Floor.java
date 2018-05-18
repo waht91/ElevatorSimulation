@@ -19,11 +19,14 @@ public class Floor {
 		this.GoingUp 	= new ArrayList<Passenger>();
 		this.GoingDown	= new ArrayList<Passenger>();
 	}
-	public boolean UpIsEmpty () {
-		return GoingUp.isEmpty();
+	public int getid() {
+		return id;
 	}
-	public boolean DownIsEmpty () {
-		return GoingDown.isEmpty();
+	public int UpSize() {
+		return GoingUp.size();
+	}
+	public int DownSize () {
+		return GoingDown.size();
 	}
 	public String FloorDirection(){
 		if(button == Button.Up){

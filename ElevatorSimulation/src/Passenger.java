@@ -18,8 +18,8 @@ public class Passenger {
 	public int getdfloor(){
 		return this.dfloor;
 	}
-	public void UpdateWait(double a){
-		this.timewaited += a;
+	public void SetWait(double a){
+		this.timewaited = a;
 	}
 	public double getWait (){
 		return timewaited;

@@ -8,34 +8,14 @@ public class Elevator {
 	private int dfloor;
 	private String direction;
 	private List<Passenger> passengers;
-	private State state = State.IDLE;
-	public static enum State {
-		IDLE,
-		MOVING
-	}
+
 	public Elevator (int id, int cfloor) {
 		this.id = id;
 		this.cfloor = cfloor;
 		this.dfloor = cfloor;
 		this.passengers = new ArrayList<Passenger>();
 	}
-	public boolean getStatus (){
-		if(this.state == State.IDLE){
-			return true;
-		}else{
-			return false;
-		}
-	}
-	public int getid() {
-		return id;
-	}
-	public int getcfloor() {
-		return cfloor;
-	}
-	public int getdfloor() {
-		return dfloor;
-	}
-	public String getdirection() {
+	public String getStatus (){
 		return direction;
 	}
 	public List<Passenger> getpassengers() {
@@ -49,23 +29,32 @@ public class Elevator {
 		this.direction = getDirection(cfloor, dfloor);
 	}
 	public void stopmoving(){
-		this.direction = "STOP";
-		this.state = State.IDLE;
-		
+		direction = "IDLE";
 	}
-	public void getThisElevator(int c, int d){
-		setdirection(d);
-		this.state = State.MOVING;
+	public void addPassenger(Passenger pp, double currentTime){
+		pp.SetWait(currentTime-pp.getArrival());
+		passengers.add(pp);
+	}
+	public List<Passenger> TakeOff() {
+		List<Passenger> offPassenger = new ArrayList<Passenger>();
+		System.out.println("Elevator #"+id+" TakeOff Passengers");
+		for(int i = 0; i<passengers.size(); i++ ) {
+			if(cfloor == passengers.get(i).getdfloor()) {
+				System.out.println("Passenger id:"+passengers.get(i).getid()
+									+"Passenger Arrival Time: "+passengers.get(i).getArrival()
+									+"From floor: "+passengers.get(i).getcfloor()
+									+"To floor : "+passengers.get(i).getdfloor()
+									+"Wait Time: "+passengers.get(i).getWait());
+				offPassenger.add(passengers.remove(i));
+			}
+		}
+		return offPassenger;
 	}
 	public int nextFloor() {		
-		if (this.state == State.MOVING) {
-			if (this.direction.equals("UP")) {
-				return this.cfloor + 1;
-			} else if (this.direction.equals("DOWN")) {
-				return this.cfloor - 1;
-			} else {
-				return this.cfloor;
-			}
+		if (direction == "UP") {
+			return this.cfloor + 1;
+		} else if (direction == "DOWN") {
+			return this.cfloor - 1;
 		} else {
 			return this.cfloor;
 		}
@@ -77,7 +66,28 @@ public class Elevator {
 		} else if (dir > 0) {
 			return "UP";
 		} else {
-			return "ARRIVED";
+			return "IDLE";
 		}
 	}
 }
+
+/*
+ *
+ *
+	public int getid() {
+		return id;
+	}
+	public int getcfloor() {
+		return cfloor;
+	}
+	public int getdfloor() {
+		return dfloor;
+	}
+	public String getdirection() {
+		return direction;
+	}
+ *
+ *
+ *
+ */
+
