@@ -30,4 +30,7 @@ public class Passenger {
 	public int getid(){
 		return id;
 	}
+	public double getLeavingTime() {
+		return arrivaltime + timewaited;
+	}
 }

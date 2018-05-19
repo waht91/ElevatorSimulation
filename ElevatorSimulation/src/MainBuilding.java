@@ -41,6 +41,7 @@ public class MainBuilding {
 	}
 	public static void addNewPassengerToFloor (Passenger newPassenger){
 			int fc = newPassenger.getcfloor();
+//			System.out.println("Passenger "+newPassenger.getid()+" arrived at floor "+fc);
 			BuildingFloors.get(fc).addPassenger(newPassenger);
 			
 		
@@ -51,8 +52,8 @@ public class MainBuilding {
 		return firstPassenger;
 	}
 	public static void exponentiallyCreatePerson () {
-//		System.out.println(cpt+"  "+currenttime());
 		if(cpt == currenttime()) {
+			PassengerCount++;
 			Passenger firstPassenger = newPassenger(cpt);
 			addNewPassengerToFloor(firstPassenger); 
 			ComingPassengersQueue.add(firstPassenger);
@@ -82,14 +83,10 @@ public class MainBuilding {
 		
 		while(currenttime () <1000.0){
 			exponentiallyCreatePerson ();
-			if(controller.checkFloors()){
-				controller.requestElevator();
-			}
-			controller.tookoff();
-			controller.timer ();
+			controller.RunElevator(currenttime());
 			increasetime (0.1);
 		}
 		
-		System.out.println("Program Ended");
+		System.out.println("Program Ended" + PassengerCount);
 	}
 }

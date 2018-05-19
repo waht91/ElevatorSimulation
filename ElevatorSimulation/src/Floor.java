@@ -37,6 +37,12 @@ public class Floor {
 			return "IDEL";
 		}
 	}
+	public List<Passenger> GetGoingUp() {
+		return GoingUp;
+	}
+	public List<Passenger> GetGoingDown() {
+		return GoingDown;
+	}
 	public String GetButton(int cFloor, int dFloor) {
 		int dir = dFloor - cFloor;
 		

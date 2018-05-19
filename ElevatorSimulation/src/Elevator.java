@@ -6,7 +6,8 @@ public class Elevator {
 	private int id;
 	private int cfloor;
 	private int dfloor;
-	private String direction;
+	private String direction="IDLE";
+	private boolean flag=false;
 	private List<Passenger> passengers;
 
 	public Elevator (int id, int cfloor) {
@@ -21,6 +22,12 @@ public class Elevator {
 	public List<Passenger> getpassengers() {
 		return passengers;
 	}
+	public int getcfloor() {
+		return cfloor;
+	}
+	public int getdfloor() {
+		return dfloor;
+	}
 	public boolean isEmpty() {
 		return passengers.isEmpty();
 	}
@@ -28,33 +35,45 @@ public class Elevator {
 		this.dfloor = df;
 		this.direction = getDirection(cfloor, dfloor);
 	}
-	public void stopmoving(){
-		direction = "IDLE";
+	public static double onedigit (double a){
+		int temp = (int)(a*10.0);
+		double b = ((double)temp)/10.0;
+		return b;
+	}
+	public boolean stopmoving(){
+		if(cfloor == dfloor) {
+			direction = "IDLE";
+			return true;
+		}else {
+			return false;
+		}
 	}
 	public void addPassenger(Passenger pp, double currentTime){
 		pp.SetWait(currentTime-pp.getArrival());
 		passengers.add(pp);
 	}
-	public List<Passenger> TakeOff() {
-		List<Passenger> offPassenger = new ArrayList<Passenger>();
-		System.out.println("Elevator #"+id+" TakeOff Passengers");
+	public void TakeOff() {
 		for(int i = 0; i<passengers.size(); i++ ) {
 			if(cfloor == passengers.get(i).getdfloor()) {
-				System.out.println("Passenger id:"+passengers.get(i).getid()
-									+"Passenger Arrival Time: "+passengers.get(i).getArrival()
-									+"From floor: "+passengers.get(i).getcfloor()
-									+"To floor : "+passengers.get(i).getdfloor()
-									+"Wait Time: "+passengers.get(i).getWait());
-				offPassenger.add(passengers.remove(i));
+				System.out.println("Elevator ID: "+ this.id
+									+"\tPassenger id:"+passengers.get(i).getid()
+									+"\tArrival Time: "+passengers.get(i).getArrival()
+									+"\tLeaving Time: "+passengers.get(i).getLeavingTime() 
+									+"\tFrom floor: "+passengers.get(i).getcfloor()
+									+"\tTo  "+passengers.get(i).getdfloor()
+									+"\tWait Time: "+onedigit (passengers.get(i).getWait()));
+				passengers.remove(i);
 			}
 		}
-		return offPassenger;
 	}
-	public int nextFloor() {		
-		if (direction == "UP") {
-			return this.cfloor + 1;
+	public int nextFloor() {	
+		if(cfloor == dfloor) {
+			direction = "IDLE";
+			return this.cfloor;
+		}else if (direction == "UP") {
+			return (this.cfloor += 1);
 		} else if (direction == "DOWN") {
-			return this.cfloor - 1;
+			return (this.cfloor -= 1);
 		} else {
 			return this.cfloor;
 		}
