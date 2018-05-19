@@ -4,71 +4,64 @@ import java.util.List;
 public class Floor {
 
 	private int id;
-	private List<Passenger> GoingUp;
-	private List<Passenger> GoingDown;
+	private List<Passenger> GoingUpDown;
 	private Button button = Button.IDLE;
-	public static enum Button 
-	{
-		Up,
-		Down,
-		IDLE
+
+	public static enum Button {
+		Up, Down, IDLE
 	}
-	public Floor(int id)
-	{
+
+	public Floor(int id) {
 		this.id = id;
-		this.GoingUp 	= new ArrayList<Passenger>();
-		this.GoingDown	= new ArrayList<Passenger>();
+		this.GoingUpDown = new ArrayList<Passenger>();
 	}
+
 	public int getid() {
 		return id;
 	}
-	public int UpSize() {
-		return GoingUp.size();
+
+	public int UpDownSize() {
+		return GoingUpDown.size();
 	}
-	public int DownSize () {
-		return GoingDown.size();
-	}
-	public String FloorDirection(){
-		if(button == Button.Up){
+
+	public String ButtonSign() {
+		if (button == Button.Up) {
 			return "UP";
-		}else if(button == Button.Down){
+		} else if (button == Button.Down) {
 			return "DOWN";
-		}else{
-			return "IDEL";
+		} else {
+			return "IDLE";
 		}
 	}
-	public List<Passenger> GetGoingUp() {
-		return GoingUp;
+
+	public List<Passenger> GetGoingUpDown() {
+		return GoingUpDown;
 	}
-	public List<Passenger> GetGoingDown() {
-		return GoingDown;
-	}
-	public String GetButton(int cFloor, int dFloor) {
+
+	public void GetButton(int cFloor, int dFloor) {
 		int dir = dFloor - cFloor;
-		
+
 		if (dir < 0) {
 			this.button = Button.Down;
-			return "DOWN";
 		} else if (dir > 0) {
 			this.button = Button.Up;
-			return "UP";
 		} else {
 			this.button = Button.IDLE;
-			return "NONE";
 		}
 	}
-	public void addPassenger(Passenger newarival) {
+
+	public void addPassenger(Passenger newarival, MainControll Controller) {
 		int dFloor = newarival.getcfloor();
 		int cFloor = newarival.getdfloor();
-		int dir = dFloor - cFloor;
-		
-		if (dir < 0) {
-			GoingDown.add(newarival);
-		} else if (dir > 0) {
-			GoingUp.add(newarival);
-		}
-		if(button == Button.IDLE){
-			GetButton(cFloor,dFloor);
+		if (button == Button.IDLE && GoingUpDown.size() > 0) {
+			int EdFloor = GoingUpDown.get(0).getdfloor();
+			int EcFloor = GoingUpDown.get(0).getcfloor();
+			GetButton(EcFloor, EdFloor);
+			Controller.signal(id);
+		} else {
+			GoingUpDown.add(newarival);
+			GetButton(cFloor, dFloor);
+			Controller.signal(id);
 		}
 	}
 }
